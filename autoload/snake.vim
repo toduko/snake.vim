@@ -1,7 +1,6 @@
-let s:timer = 150
-let s:rows = 20
-let s:cols = 50
-let s:on_timeout = 0
+source binds.vim
+source events.vim
+source highlight.vim
 
 function snake#Start()
   if filereadable(bufname('%'))
@@ -10,45 +9,18 @@ function snake#Start()
 
   exec "enew"
 
-  syntax match snake "\*"
-  syntax match food "o"
-  syntax match wall "|\|+\|-\|#"
-  syntax match score "Score: .*"
-  syntax match over "Game over!"
-
-  highlight link snake Identifier
-  highlight link food Error
-  highlight link wall Comment
-  highlight link score Constant
-  highlight link over Title
-
-  setlocal nocursorline
-
+  let s:rows = 20
+  let s:cols = 50
+  let s:on_timeout = 0
   let s:score = 0
   let s:direction = "right"
   let s:snake = [[10, 10]]
   let s:food = [5, 5]
   let s:game_over = 0
 
-  augroup UpdateGame
-    autocmd!
-    autocmd CursorHold * call Update()
-  augroup END
-
-  augroup LeaveGame
-    autocmd!
-    autocmd BufLeave * autocmd! UpdateGame CursorHold *
-  augroup END
-
-  setlocal buftype=nofile
-  
-  let &l:updatetime = s:timer
-
-  map <buffer> h :call ChangeToLeft()<CR>
-  map <buffer> j :call ChangeToDown()<CR>
-  map <buffer> k :call ChangeToUp()<CR>
-  map <buffer> l :call ChangeToRight()<CR>
-
+  call InitHighlight()
+  call InitEvents()
+  call InitBinds()
   call InitGame()
 endfunction
 
@@ -112,7 +84,7 @@ function UpdateSnakeCoords()
   call feedkeys('f<esc>')
 
   let [x, y] = s:snake[0]
-  
+
   if s:direction == "left"
     let x = x - 1
   elseif s:direction == "down"
@@ -172,7 +144,7 @@ function DrawLevel()
   endwhile
 
   call setline(l:i, s:border)
-  
+
   let l:i = l:i + 1
 
   if s:game_over == 0
