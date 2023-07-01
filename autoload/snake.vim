@@ -1,3 +1,4 @@
+source utils.vim
 source binds.vim
 source events.vim
 source highlight.vim
@@ -16,6 +17,7 @@ function snake#Start()
   let s:direction = "right"
   let s:snake = [[10, 10]]
   let s:food = [5, 5]
+  let s:walls = [[15,15], [15,16], [15,17], [16, 16], [14, 16]]
   let s:game_over = 0
 
   call InitHighlight()
@@ -105,6 +107,12 @@ function UpdateSnakeCoords()
     let y = 0
   endif
 
+  for [w_x, w_y] in s:walls
+    if x == w_x && y == w_y
+      let s:game_over = 1
+    endif
+  endfor
+
   if x == s:food[0] && y == s:food[1]
     let s:score = s:score + 1
     call ResetFood()
@@ -152,6 +160,11 @@ function DrawLevel()
   else
     call setline(l:i, "Game over! Score: " . s:score)
   endif
+
+  for [x, y] in s:walls
+    call cursor(y + 2, x + 2)
+    normal! r#
+  endfor
 endfunction
 
 function DrawSnake()
@@ -167,16 +180,11 @@ function DrawFood()
 endfunction
 
 function ResetFood()
-  let [x, y] = [Rand(s:cols), Rand(s:rows)]
+  let [x, y] = [RandInt(s:cols), RandInt(s:rows)]
 
   while index(s:snake, [x, y]) >= 0
-    let [x, y] = [Rand(s:cols), Rand(s:rows)]
+    let [x, y] = [RandInt(s:cols), RandInt(s:rows)]
   endwhile
 
   let s:food = [x, y]
-endfunction
-
-function Rand(n)
-  let l:seed = srand()
-  return rand(l:seed) % a:n
 endfunction
