@@ -182,7 +182,7 @@ endfunction
 function ResetFood()
   let [x, y] = [RandInt(s:cols), RandInt(s:rows)]
 
-  while index(s:snake, [x, y]) >= 0
+  while index(s:snake, [x, y]) >= 0 || index(s:walls, [x, y]) >= 0
     let [x, y] = [RandInt(s:cols), RandInt(s:rows)]
   endwhile
 
