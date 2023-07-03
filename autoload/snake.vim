@@ -10,11 +10,12 @@ function snake#Start()
 
   exec "enew"
 
+  let s:started = 0
   let s:rows = 20
   let s:cols = 50
   let s:on_timeout = 0
   let s:score = 0
-  let s:direction = "right"
+  let s:direction = ""
   let s:snake = [[10, 10]]
   let s:food = [5, 5]
   let s:walls = [[15,15], [15,16], [15,17], [16, 16], [14, 16]]
@@ -55,6 +56,7 @@ function InitGame()
 endfunction
 
 function ChangeToLeft()
+  let s:started = 1
   if s:direction != "right" && s:on_timeout == 0
     let s:direction = "left"
     let s:on_timeout = 1
@@ -62,6 +64,7 @@ function ChangeToLeft()
 endfunction
 
 function ChangeToDown()
+  let s:started = 1
   if s:direction != "up" && s:on_timeout == 0
     let s:direction = "down"
     let s:on_timeout = 1
@@ -69,6 +72,7 @@ function ChangeToDown()
 endfunction
 
 function ChangeToUp()
+  let s:started = 1
   if s:direction != "down" && s:on_timeout == 0
     let s:direction = "up"
     let s:on_timeout = 1
@@ -76,6 +80,7 @@ function ChangeToUp()
 endfunction
 
 function ChangeToRight()
+  let s:started = 1
   if s:direction != "left" && s:on_timeout == 0
     let s:direction = "right"
     let s:on_timeout = 1
@@ -132,7 +137,9 @@ function Update()
     return
   endif
 
-  call UpdateSnakeCoords()
+  if s:started == 1
+    call UpdateSnakeCoords()
+  endif
 
   let s:on_timeout = 0
 
@@ -155,7 +162,9 @@ function DrawLevel()
 
   let l:i = l:i + 1
 
-  if s:game_over == 0
+  if s:started == 0
+    call setline(l:i, "Press hjkl and the game will begin")
+  elseif s:game_over == 0
     call setline(l:i, "Score: " . s:score)
   else
     call setline(l:i, "Game over! Score: " . s:score)
