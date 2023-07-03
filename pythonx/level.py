@@ -3,10 +3,18 @@ def is_valid_level(filename):
         level = (file.read().split('\n'))[:-1]
         rows = len(level) - 2
         cols = len(level[0]) - 2
+        food_count, snake_count = 0, 0
+
+        for row in range(rows):
+            food_count = food_count + level[row+1].count('o')
+            snake_count = snake_count + level[row+1].count('*')
+        
+        if food_count != 1 and snake_count != 1:
+            return False
 
         def helper(line):
             for symbol in line:
-                if symbol not in '|+-# ':
+                if symbol not in '|+-#o* ':
                     return False
 
             return len(line) == cols + 2 and line[0] == '|' and line[-1] == '|'
@@ -27,3 +35,17 @@ def is_valid_level(filename):
             return False
 
     return True
+
+def get_level_data(filename):
+    with open(filename) as file:
+        level = (file.read().split('\n'))[:-1]
+        rows = len(level) - 2
+        cols = len(level[0]) - 2
+        walls = []
+        for row in range(rows):
+            for col in range(cols):
+                if level[row+1][col+1] == '#': walls.append([col, row])
+
+        return [rows, cols, walls]
+
+    return []
