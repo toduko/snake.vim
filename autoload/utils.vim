@@ -1,12 +1,12 @@
-function RandInt(n)
+function! RandInt(n)
   let l:seed = srand()
   return rand(l:seed) % a:n
-endfunction
+endfunction!
 
-function SaveAndOpenNewBuffer()
+function! SaveAndOpenNewBuffer()
   if filereadable(bufname('%'))
     exec "w"
   endif
 
   exec "enew"
-endfunction
+endfunction!

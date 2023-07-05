@@ -6,63 +6,89 @@ for import in s:imports
   exec 'source' . s:path . '/' . import . '.vim'
 endfor
 
-function snake#OpenEditor(rows, cols)
+function! snake#OpenEditor(rows, cols)
   call SaveAndOpenNewBuffer()
   call DrawBorders(a:rows, a:cols)
-endfunction
+endfunction!
 
-function snake#Start()
+pyx import vim
+exec 'pyxfile' s:path . '/../pythonx/level.py'
+
+function! OpenLevel(level_path)
+  pyx vim.command("let l:valid = '%s'" % is_valid_level(vim.eval("a:level_path")))
+
+  if l:valid == 'False'
+    echo "Invalid level: " . a:level_path
+    return 1
+  endif 
+
+  pyx rows, cols, snake, food, walls = get_level_data(vim.eval("a:level_path"))
+  pyx vim.command("let s:rows = eval('%s')" % rows)
+  pyx vim.command("let s:cols = eval('%s')" % cols)
+  pyx vim.command("let s:snake = eval('%s')" % snake)
+  pyx vim.command("let s:food = eval('%s')" % food)
+  pyx vim.command("let s:walls = eval('%s')" % walls)
+
+  return 0
+endfunction!
+
+function! snake#Start( ... )
+  if a:0 == 0
+    let l:level_path = s:path . '/../default_level.txt'
+  else
+    let l:level_path = a:1
+  endif
+
+  if OpenLevel(l:level_path) == 1
+    return
+  endif
+
   call SaveAndOpenNewBuffer()
 
   let s:started = 0
-  let s:rows = 20
-  let s:cols = 50
   let s:on_timeout = 0
   let s:score = 0
   let s:direction = ""
-  let s:snake = [[10, 10]]
-  let s:food = [5, 5]
-  let s:walls = [[15,15], [15,16], [15,17], [16, 16], [14, 16]]
   let s:game_over = 0
 
   call InitHighlight()
   call InitEvents()
   call InitBinds()
-endfunction
+endfunction!
 
-function ChangeToLeft()
+function! ChangeToLeft()
   let s:started = 1
   if s:direction != "right" && s:on_timeout == 0
     let s:direction = "left"
     let s:on_timeout = 1
   endif
-endfunction
+endfunction!
 
-function ChangeToDown()
+function! ChangeToDown()
   let s:started = 1
   if s:direction != "up" && s:on_timeout == 0
     let s:direction = "down"
     let s:on_timeout = 1
   endif
-endfunction
+endfunction!
 
-function ChangeToUp()
+function! ChangeToUp()
   let s:started = 1
   if s:direction != "down" && s:on_timeout == 0
     let s:direction = "up"
     let s:on_timeout = 1
   endif
-endfunction
+endfunction!
 
-function ChangeToRight()
+function! ChangeToRight()
   let s:started = 1
   if s:direction != "left" && s:on_timeout == 0
     let s:direction = "right"
     let s:on_timeout = 1
   endif
-endfunction
+endfunction!
 
-function UpdateSnakeCoords()
+function! UpdateSnakeCoords()
   call feedkeys('f<esc>')
 
   let [x, y] = s:snake[0]
@@ -105,9 +131,9 @@ function UpdateSnakeCoords()
   endif
 
   call insert(s:snake, [x, y])
-endfunction
+endfunction!
 
-function Update()
+function! Update()
   if s:game_over == 1
     return
   endif
@@ -123,9 +149,9 @@ function Update()
   call DrawWalls(s:walls)
   call DrawSnake(s:snake)
   call DrawFood(s:food)
-endfunction
+endfunction!
 
-function ResetFood()
+function! ResetFood()
   let [x, y] = [RandInt(s:cols), RandInt(s:rows)]
 
   while index(s:snake, [x, y]) >= 0 || index(s:walls, [x, y]) >= 0
@@ -133,4 +159,4 @@ function ResetFood()
   endwhile
 
   let s:food = [x, y]
-endfunction
+endfunction!

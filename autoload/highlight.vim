@@ -1,4 +1,4 @@
-function InitHighlight()
+function! InitHighlight()
   syntax match snake "\*"
   syntax match food "o"
   syntax match wall "|\|+\|-\|#"
@@ -13,4 +13,4 @@ function InitHighlight()
 
   setlocal nocursorline
   setlocal buftype=nofile
-endfunction
+endfunction!

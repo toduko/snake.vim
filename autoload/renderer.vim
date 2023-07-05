@@ -1,4 +1,4 @@
-function DrawBorders(rows, cols)
+function! DrawBorders(rows, cols)
   normal! ggdG
   let l:space = "|"
   let l:border = "+"
@@ -23,9 +23,9 @@ function DrawBorders(rows, cols)
   endwhile
 
   call append(line('$'), l:border)
-endfunction
+endfunction!
 
-function DrawStatus(started, game_over, score)
+function! DrawStatus(started, game_over, score)
   if a:started == 0
     call append(line('$'), "Press hjkl and the game will begin")
   elseif a:game_over == 0
@@ -33,23 +33,23 @@ function DrawStatus(started, game_over, score)
   else
     call append(line('$'), "Game over! Score: " . a:score)
   endif
-endfunction
+endfunction!
 
-function DrawWalls(walls)
+function! DrawWalls(walls)
   for [x, y] in a:walls
     call cursor(y + 2, x + 2)
     normal! r#
   endfor
-endfunction
+endfunction!
 
-function DrawSnake(snake)
+function! DrawSnake(snake)
   for [x, y] in a:snake
     call cursor(y + 2, x + 2)
     normal! r*
   endfor
-endfunction
+endfunction!
 
-function DrawFood(food)
+function! DrawFood(food)
   call cursor(a:food[1] + 2, a:food[0] + 2)
   normal! ro
-endfunction
+endfunction!
