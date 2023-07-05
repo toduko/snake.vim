@@ -1,0 +1,83 @@
+*snake.txt*       Play snake on your favourite editor.
+                           _                         _               ~
+     ___   _ __     __ _  | | __   ___      __   __ (_)  _ __ ___    ~
+    / __| | '_ \   / _` | | |/ /  / _ \     \ \ / / | | | '_ ` _ \   ~
+    \__ \ | | | | | (_| | |   <  |  __/  _   \ V /  | | | | | | | |  ~
+    |___/ |_| |_|  \__,_| |_|\_\  \___| (_)   \_/   |_| |_| |_| |_|  ~
+
+================================================================================
+CONTENTS                                                    *snake* *snake-contents*
+
+    Installation.........................: |snake-installation|
+    Usage................................: |snake-usage|
+        Start a game.....................: |SnakeStart|
+        Open the level editor............: |SnakeOpenEditor|
+
+================================================================================
+INSTALLATION                                                  *snake-installation*
+
+    The easiest way to install the plugin is with a plugin manager:
+
+    - vim-plug: https://github.com/junegunn/vim-plug
+    - Vundle:   https://github.com/VundleVim/Vundle.vim
+
+    If you use one, just follow the instructions in its documentation.
+
+    You can install the plugin yourself using Vim's |packages| functionality by
+    cloning the project (or adding it as a submodule) under
+    `~/.vim/pack/<any-name>/start/`. For example:
+>
+        git clone https://github.com/toduko/snake.vim ~/.vim/pack/_/start/splitjoin
+<
+    This should automatically load the plugin for you on Vim start. Alternatively,
+    you can add it to `~/.vim/pack/<any-name>/opt/` instead and load it in your
+    .vimrc manually with:
+>
+        packadd snake
+<
+
+================================================================================
+USAGE                                                                *snake-usage*
+
+--------------------------------------------------------------------------------
+Start a game
+
+:SnakeStart [<level_path>]                                            *SnakeStart*
+    Starts a snake game and with the level from <level_path>.
+    If no argument was passed a default level is used instead.
+    The default level can be found at:
+    https://github.com/toduko/snake.vim/blob/master/default_level.txt
+
+    Additional game info:
+        - `hjkl` keys are used for movement
+        `- #` is a wall that can kill you
+        `- o` is food to eat and grow
+        `- *` is the snake
+
+--------------------------------------------------------------------------------
+Open the level editor
+
+:SnakeOpenEditor <rows> <cols>                                   *SnakeOpenEditor*
+    Opens an empty buffer with drawn level borders.
+    For example `SnakeOpenEditor 10 20` will result in:
+>
+    +--------------------+
+    |                    |
+    |                    |
+    |                    |
+    |                    |
+    |                    |
+    |                    |
+    |                    |
+    |                    |
+    |                    |
+    |                    |
+    +--------------------+
+<
+    The format of the map is the same as the one in the actual game.
+    Also:
+        - ONLY one piece of food must be on the map
+        - ONLY one piece of the snake must be on the map
+        - walls must not exceed 35% of the map
+
+vim:ft=help
