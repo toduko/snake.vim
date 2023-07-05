@@ -1,7 +1,10 @@
-source utils.vim
-source binds.vim
-source events.vim
-source highlight.vim
+let s:path = expand('%:p:h')
+
+let s:imports = ['utils', 'binds', 'events', 'highlight']
+
+for import in s:imports
+  exec 'source' . path . '/' . import . '.vim'
+endfor
 
 function snake#Start()
   if filereadable(bufname('%'))
