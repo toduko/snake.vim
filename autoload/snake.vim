@@ -1,4 +1,4 @@
-let s:path = expand('%:p:h')
+let s:path = expand('<sfile>:p:h')
 
 let s:imports = ['utils', 'binds', 'events', 'renderer', 'highlight']
 
@@ -6,12 +6,13 @@ for import in s:imports
   exec 'source' . s:path . '/' . import . '.vim'
 endfor
 
-function snake#Start()
-  if filereadable(bufname('%'))
-    exec "w"
-  endif
+function snake#OpenEditor(rows, cols)
+  call SaveAndOpenNewBuffer()
+  call DrawBorders(a:rows, a:cols)
+endfunction
 
-  exec "enew"
+function snake#Start()
+  call SaveAndOpenNewBuffer()
 
   let s:started = 0
   let s:rows = 20
