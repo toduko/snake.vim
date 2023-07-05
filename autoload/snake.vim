@@ -1,9 +1,9 @@
 let s:path = expand('%:p:h')
 
-let s:imports = ['utils', 'binds', 'events', 'highlight']
+let s:imports = ['utils', 'binds', 'events', 'renderer', 'highlight']
 
 for import in s:imports
-  exec 'source' . path . '/' . import . '.vim'
+  exec 'source' . s:path . '/' . import . '.vim'
 endfor
 
 function snake#Start()
@@ -27,35 +27,6 @@ function snake#Start()
   call InitHighlight()
   call InitEvents()
   call InitBinds()
-  call InitGame()
-endfunction
-
-function InitGame()
-  let s:space = "|"
-  let s:border = "+"
-
-  let l:i = 1
-
-  while l:i <= s:cols
-    let s:space = s:space . " "
-    let s:border = s:border . "-"
-    let l:i = l:i + 1
-  endwhile
-
-  let s:space = s:space . "|"
-  let s:border = s:border . "+"
-  let l:i = 1
-
-  call setline(line('.'), s:border) 
-
-  while l:i <= s:rows
-    call append(line('$'), s:space)
-    let l:i = l:i + 1
-  endwhile
-
-  call append(line('$'), s:border)
-
-  call append(line('$'), "Score: " . s:score)
 endfunction
 
 function ChangeToLeft()
@@ -146,49 +117,11 @@ function Update()
 
   let s:on_timeout = 0
 
-  call DrawLevel()
-  call DrawSnake()
-  call DrawFood()
-endfunction
-
-function DrawLevel()
-  let l:i = 2
-
-  call setline(1, s:border)
-
-  while l:i <= s:rows + 1
-    call setline(l:i, s:space)
-    let l:i = l:i + 1
-  endwhile
-
-  call setline(l:i, s:border)
-
-  let l:i = l:i + 1
-
-  if s:started == 0
-    call setline(l:i, "Press hjkl and the game will begin")
-  elseif s:game_over == 0
-    call setline(l:i, "Score: " . s:score)
-  else
-    call setline(l:i, "Game over! Score: " . s:score)
-  endif
-
-  for [x, y] in s:walls
-    call cursor(y + 2, x + 2)
-    normal! r#
-  endfor
-endfunction
-
-function DrawSnake()
-  for [x, y] in s:snake
-    call cursor(y + 2, x + 2)
-    normal! r*
-  endfor
-endfunction
-
-function DrawFood()
-  call cursor(s:food[1] + 2, s:food[0] + 2)
-  normal! ro
+  call DrawBorders(s:rows, s:cols)
+  call DrawStatus(s:started, s:game_over, s:score)
+  call DrawWalls(s:walls)
+  call DrawSnake(s:snake)
+  call DrawFood(s:food)
 endfunction
 
 function ResetFood()
