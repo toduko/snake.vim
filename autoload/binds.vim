@@ -15,3 +15,19 @@ function! ClearUnnecessaryBinds()
     exec 'map <buffer> ' . toupper(key) . ' <nop>'
   endfor
 endfunction
+
+function! InitEditorBinds()
+  map <silent> <buffer> w :call Write('#')<CR>
+  map <silent> <buffer> s :call Write('*')<CR>
+  map <silent> <buffer> f :call Write('o')<CR>
+  map <silent> <buffer> c :call Write(' ')<CR>
+endfunction
+
+function! Write(symbol)
+  echo strcharpart(getline('.')[col('.') - 1:], 0, 1)
+  if index(['|', '+', '-'], strcharpart(getline('.')[col('.') - 1:], 0, 1)) >= 0
+    return
+  endif
+
+  exec 'normal! r' . a:symbol
+endfunction
