@@ -1,5 +1,5 @@
 function! DrawBorders(rows, cols)
-  normal! ggdG
+  silent normal! ggdG
   let l:space = "|"
   let l:border = "+"
 
