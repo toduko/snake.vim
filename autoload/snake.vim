@@ -104,11 +104,11 @@ function! UpdateSnakeCoords()
   endif
 
   if x < 0
-    let x = s:cols
+    let x = s:cols - 1
   elseif x == s:cols
     let x = 0
   elseif y < 0
-    let y = s:rows
+    let y = s:rows - 1
   elseif y == s:rows
     let y = 0
   endif
