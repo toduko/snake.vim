@@ -27,7 +27,12 @@ INSTALLATION                                                  *snake-installatio
     cloning the project (or adding it as a submodule) under
     `~/.vim/pack/<any-name>/start/`. For example:
 >
-        git clone https://github.com/toduko/snake.vim ~/.vim/pack/_/start/splitjoin
+        mkdir -p ~/.vim/pack/toduko/start
+        cd ~/.vim/pack/toduko/start
+        git clone https://github.com/toduko/snake.vim.git
+
+        # to generate documentation tags:
+        vim -u NONE -c "helptags snake.vim/doc" -c q
 <
     This should automatically load the plugin for you on Vim start. Alternatively,
     you can add it to `~/.vim/pack/<any-name>/opt/` instead and load it in your
@@ -50,9 +55,9 @@ Start a game
 
     Additional game info:
         - `hjkl` keys are used for movement
-        `- #` is a wall that can kill you
-        `- o` is food to eat and grow
-        `- *` is the snake
+        - `#` is a wall that can kill you
+        - `o` is food to eat and grow
+        - `*` is the snake
 
 --------------------------------------------------------------------------------
 Open the level editor
@@ -79,5 +84,11 @@ Open the level editor
         - ONLY one piece of food must be on the map
         - ONLY one piece of the snake must be on the map
         - walls must not exceed 35% of the map
+
+    The user can use the following binds inside the editor:
+        - `w` to place a wall inside current cell
+        `- s` to place the snake inside current cell
+        `- f` to place the food inside current cell
+        `- c` to clear current cell
 
 vim:ft=help
