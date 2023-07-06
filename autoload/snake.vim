@@ -8,6 +8,7 @@ endfor
 
 function! snake#OpenEditor(rows, cols)
   call SaveAndOpenNewBuffer()
+  call ClearUnnecessaryBinds()
   call DrawBorders(a:rows, a:cols)
 endfunction!
 
