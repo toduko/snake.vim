@@ -9,8 +9,10 @@ endfor
 function! snake#OpenEditor(rows, cols)
   call SaveAndOpenNewBuffer()
   call ClearUnnecessaryBinds()
+  call InitHighlight()
   call InitEditorBinds()
   call DrawBorders(a:rows, a:cols)
+  highlight link food WarningMsg
 endfunction!
 
 pyx import vim
