@@ -10,7 +10,7 @@ endfunction!
 function! ClearUnnecessaryBinds()
   mapclear <buffer>
 
-  for key in ['i', 'a', 'v', 'c', 'x', 'd']
+  for key in ['i', 'a', 'v', 'c', 'x', 'd', 'o']
     exec 'map <buffer> ' . key . ' <nop>'
     exec 'map <buffer> ' . toupper(key) . ' <nop>'
   endfor
